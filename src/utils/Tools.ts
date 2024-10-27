@@ -1,5 +1,5 @@
 import Toolbar from "../components/tools/Toolbar";
-import { createApp } from "vue";
+import { render, h } from "vue";
 
 class Tools {
   constructor(rootDom: HTMLElement) {
@@ -7,10 +7,12 @@ class Tools {
   }
 
   private init(rootDom: HTMLElement) {
-    const toolbar = document.createElement("div");
-    createApp(Toolbar).mount(toolbar);
+    // const toolbar = document.createElement("div");
+    // createApp(Toolbar).mount(toolbar);
 
-    rootDom.append(toolbar)
+    // rootDom.append(toolbar)
+
+    render(h(Toolbar), rootDom);
   }
 }
 
