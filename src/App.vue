@@ -7,8 +7,6 @@ onMounted(() => new DrawingBoard('drawing-board-container'))
 
 <template>
   <div id="drawing-board-container"></div>
-  <Toolbar />
-  <HelloWorld />
 </template>
 
 <style lang="scss" scoped>
