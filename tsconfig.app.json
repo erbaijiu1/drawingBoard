@@ -1,36 +1,36 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
+    "target": "esnext",
     "useDefineForClassFields": true,
-    "module": "ESNext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "strict": false,
+    "jsx": "preserve",
+    // "jsxImportSource": "vue",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
     "lib": [
-      "ES2020",
-      "DOM",
-      "DOM.Iterable"
+      "esnext",
+      "dom"
     ],
-    "skipLibCheck": true,
     "types": [
       "element-plus/global",
       "vite/client",
     ],
-    /* Bundler mode */
-    "moduleResolution": "Bundler",
-    "allowImportingTsExtensions": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+    },
     "isolatedModules": true,
-    "moduleDetection": "force",
-    "noEmit": true,
-    "jsx": "react-jsx",
-    /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "skipLibCheck": true
   },
   "include": [
-    "src/**/*.tsx",
-    "src/**/*.vue",
     "src/**/*.ts",
     "src/**/*.d.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue",
   ]
 }

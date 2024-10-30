@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import DrawingBoard from './utils/DrawingBoard'
+import App from './utils/App';
 
-onMounted(() => new DrawingBoard('drawing-board-container'))
+onMounted(() => App.init({ domId: 'drawing-board-container' }));
 </script>
 
 <template>

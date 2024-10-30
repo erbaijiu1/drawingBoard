@@ -1,7 +1,8 @@
 import { Ellipse, Line, Pen, Rect, Text } from "leafer-ui";
-import Toolbar from "../components/tools/Toolbar";
-import { render, h, FunctionalComponent } from "vue";
+import Index from "../components/tools/index";
+import { render, h, ref, Ref, nextTick } from "vue";
 import { Arrow } from '@leafer-in/arrow'
+
 import SELECT_TOOl_ICON from '../assets/xuanzegongju.svg'
 import BRUSH_TOOl_ICON from '../assets/huabi.svg'
 import ERASER_TOOl_ICON from '../assets/xiangpigongju.svg'
@@ -10,6 +11,8 @@ import ELLIPSE_TOOl_ICON from '../assets/huabigongju-tuoyuan.svg'
 import TEXT_TOOl_ICON from '../assets/huabigongju-wenben.svg'
 import LINE_TOOl_ICON from '../assets/zhixiangongju.svg'
 import ARROW_TOOl_ICON from '../assets/jiantougongju-hover.svg'
+
+import LineSegmentPlugin from "../components/plugins/LineSegmentPlugin";
 
 export const FILL = '#fff';
 export const INITIAL_WIDTH = 0;
@@ -23,6 +26,8 @@ export interface IToolBarItem {
   cursor?: string;
   isAfterRemove?: boolean;
   createdFactory?: (x: number, y: number) => any;
+  menuPlugins?: Array<any>
+  strokeWidth?: number
 }
 
 export const toolBarOptions: IToolBarItem[] = [
@@ -33,18 +38,21 @@ export const toolBarOptions: IToolBarItem[] = [
   },
   {
     icon: BRUSH_TOOl_ICON,
-    name: 'selectTool',
+    name: 'brushTool',
     title: '画笔',
-    createdFactory: (x: number, y: number) => {
-      const pen = new Pen({
+    strokeWidth: 3,
+    createdFactory(x: number, y: number) {
+      const pen: Pen = new Pen({
+        name: 'brushTool',
         x,
         y,
         editable: true
       });
 
-      pen.setStyle({ stroke: 'rgba(0, 0, 0, 1)', strokeWidth: 3, strokeCap: 'round', strokeJoin: 'round' })
+      pen.setStyle({ stroke: 'rgba(0, 0, 0, 1)', strokeWidth: this.strokeWidth, strokeCap: 'round', strokeJoin: 'round' })
       return pen;
-    }
+    },
+    menuPlugins: [LineSegmentPlugin],
   },
   {
     icon: RECT_TOOl_ICON,
@@ -138,13 +146,22 @@ export const toolBarOptions: IToolBarItem[] = [
 ]
 
 class Tools {
-  constructor(rootDom: HTMLElement) {
-    this.init(rootDom);
+  public toolbarActiveIndex: Ref<number> = ref(0);
+  constructor() {
+    this.init();
   }
 
-  private init(rootDom: HTMLElement) {
-    render(h(Toolbar), rootDom);
+  private init() {
+    const div = document.createElement('div');
+    document.getElementById('app').append(div);
+
+    nextTick(() => render(h(Index), div))
   }
+
+  public getActiveGraphics() {
+    return toolBarOptions[this.toolbarActiveIndex.value];
+  }
+
 }
 
 export default Tools;
