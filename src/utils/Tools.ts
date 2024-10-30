@@ -12,7 +12,7 @@ import TEXT_TOOl_ICON from '../assets/huabigongju-wenben.svg'
 import LINE_TOOl_ICON from '../assets/zhixiangongju.svg'
 import ARROW_TOOl_ICON from '../assets/jiantougongju-hover.svg'
 
-import LineSegmentPlugin from "../components/plugins/LineSegmentPlugin";
+import LineSegmentSizePlugin from "../components/plugins/LineSegmentSizePlugin";
 
 export const FILL = '#fff';
 export const INITIAL_WIDTH = 0;
@@ -52,7 +52,7 @@ export const toolBarOptions: IToolBarItem[] = [
       pen.setStyle({ stroke: 'rgba(0, 0, 0, 1)', strokeWidth: this.strokeWidth, strokeCap: 'round', strokeJoin: 'round' })
       return pen;
     },
-    menuPlugins: [LineSegmentPlugin],
+    menuPlugins: [LineSegmentSizePlugin],
   },
   {
     icon: RECT_TOOl_ICON,

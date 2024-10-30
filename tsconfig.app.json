@@ -19,11 +19,11 @@
       "vite/client",
     ],
     "baseUrl": "./",
-    "paths": {
-      "@/*": [
-        "src/*"
-      ],
-    },
+    // "paths": {
+    //   "@/*": [
+    //     "src/*"
+    //   ],
+    // },
     "isolatedModules": true,
     "skipLibCheck": true
   },

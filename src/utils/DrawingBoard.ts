@@ -10,6 +10,7 @@ class DrawingBoard {
   private leaferInstance: null | App = null;
   private rootDom: null | HTMLElement = null;
   private clearGraphicsQueue = new Map<ILeaf, ILeaf>();
+  private isSelect = false;
 
   public tools: null | Tools = null;
   public selectedGraphics: Ref<null | any> = ref(null);
@@ -49,8 +50,6 @@ class DrawingBoard {
     app.on(DragEvent.DRAG, this.mousemove)
     app.on(DragEvent.UP, this.mouseup)
     app.editor.on(EditorEvent.SELECT, this.graphicSelected)
-
-
   }
 
   private mousedown = (e: DragEvent) => this.aop(null, () => {
@@ -108,6 +107,8 @@ class DrawingBoard {
   })
 
   private mouseup = () => {
+    if (this.isSelect) return;
+
     if (this.tools.getActiveGraphics().isAfterRemove) {
       this.selectedGraphics.value.remove();
     }
@@ -138,13 +139,17 @@ class DrawingBoard {
     this.leaferInstance.editor.visible = state
   }
 
-  private graphicSelected = ({ value, oldValue }: any) => {
-    console.log('value', value);
-    
-    if (!value || !value?.tag) return this.selectedGraphics.value = null;
+  private graphicSelected = ({ value }: any) => {
+    if (!value || !value?.tag) {
+      this.selectedGraphics.value = null;
+      this.isSelect = false;
+      return;
+    }
+
+    this.isSelect = true;
 
     if (value.tag === 'Pen') {
-      value.children[0].name = this.selectedGraphics.value.name;
+      value.children[0].name = value.name
       this.selectedGraphics.value = value.children[0];
     } else {
       this.selectedGraphics.value = value;

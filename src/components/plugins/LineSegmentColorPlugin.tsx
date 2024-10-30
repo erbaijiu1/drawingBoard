@@ -1,4 +1,4 @@
-import DrawingBoard from '@/utils/DrawingBoard'
+import DrawingBoard from '../../utils/DrawingBoard'
 import { ElRow, ElCol, ElSlider } from 'element-plus'
 
 interface IProps {
@@ -10,19 +10,19 @@ const LineSegmentPlugin = ({ drawingBoard }: IProps) => {
     return (
         <ElRow>
             <ElCol span={24}>
-                <p class="text">线段粗细</p>
+                <p class="text">线段颜色</p>
             </ElCol>
 
             <ElCol span={24} >
-                <ElSlider
-                    modelValue={graphics.value['strokeWidth']}
+                {/* <ElSlider
+                    modelValue={graphics.value['stroke']}
                     onUpdate:modelValue={(val) => {
-                        graphics.value['strokeWidth'] = val
+                        graphics.value['stroke'] = val
                     }}
                     max={20}
                     min={1}
-                />
-            </ElCol >
+                /> */}
+            </ElCol>
         </ElRow >
     )
 }
