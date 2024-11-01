@@ -3,7 +3,7 @@ import './ToolbarMenu.scss'
 import { computed, defineComponent } from 'vue';
 import App from '../../utils/App';
 import { toolBarOptions } from '../../utils/Tools'
-
+import LayerOptions from '../plugins/LayerOptions'
 
 export default defineComponent({
     name: 'ToolbarMenu',
@@ -12,28 +12,50 @@ export default defineComponent({
             if (App.drawingBoardInstance.tools.toolbarActiveIndex.value) {
                 return toolBarOptions[App.drawingBoardInstance.tools.toolbarActiveIndex.value]
             } else if (App.drawingBoardInstance.selectedGraphics.value) {
-                const result = toolBarOptions.find(v => {
+                return toolBarOptions.find(v => {
                     return v.name === App.drawingBoardInstance.selectedGraphics.value.name
                 })
-
-                console.log('result', result);
-
-                return result;
             }
         })
 
-        console.log('activeGraphics', activeGraphics);
+        // const changeGraphicsZIndex = (type: string) => {
+        //     const graphics = App.drawingBoardInstance.getSelectedGraphics();
+
+        //     graphics
+        // }
 
         return () => (
-            <section className="toolbarMenu">
+            <div>
                 {
-                    activeGraphics.value?.menuPlugins?.map(menuPlugin => {
-                        return (
-                            <menuPlugin drawingBoard={App.drawingBoardInstance} />
-                        )
-                    })
+                    activeGraphics.value?.menuPlugins?.length ? < section className="toolbarMenu" >
+                        {
+                            activeGraphics.value?.menuPlugins?.map(menuPlugin => {
+                                return (
+                                    <div className="toolbarMenuOption">
+                                        <menuPlugin drawingBoard={App.drawingBoardInstance} />
+                                    </div>
+                                )
+                            })
+                        }
+
+                        <LayerOptions drawingBoard={App.drawingBoardInstance} />
+
+                        {/* <div className="toolbarMenuLayer">
+                            {
+                                LAYER_LIST.map(Layer => {
+                                    return (
+                                        <span title={Layer.title} onClick={() => changeGraphicsZIndex(Layer.type)} key={Layer.type}>
+                                            <ElIcon>
+                                                <Layer.icon />
+                                            </ElIcon>
+                                        </span>
+                                    )
+                                })
+                            }
+                        </div> */}
+                    </section > : null
                 }
-            </section >
+            </div>
         )
     }
 })

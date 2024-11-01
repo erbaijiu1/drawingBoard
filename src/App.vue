@@ -1,8 +1,16 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
+import { onMounted, onUnmounted } from 'vue';
 import App from './utils/App';
 
-onMounted(() => App.init({ domId: 'drawing-board-container' }));
+onMounted(() =>
+  App.init({
+    domId: 'drawing-board-container',
+    onChange: json => {
+      console.log(json);
+    },
+  })
+);
+onUnmounted(() => App.destroy());
 </script>
 
 <template>

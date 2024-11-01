@@ -13,22 +13,14 @@ import LINE_TOOl_ICON from '../assets/zhixiangongju.svg'
 import ARROW_TOOl_ICON from '../assets/jiantougongju-hover.svg'
 
 import LineSegmentSizePlugin from "../components/plugins/LineSegmentSizePlugin";
+import LineSegmentColorPlugin from "../components/plugins/LineSegmentColorPlugin";
+import LineSegmentBackgroundColorPlugin from "../components/plugins/LineSegmentBackgroundColorPlugin";
+import { IToolBarItem } from "./types";
+import TextColor from "../components/plugins/TextColor";
+import TextSize from "../components/plugins/TextSize";
 
-export const FILL = '#fff';
 export const INITIAL_WIDTH = 0;
 export const INITIAL_HEIGHT = 0;
-
-export interface IToolBarItem {
-  icon: string;
-  name: string;
-  title: string;
-  notMove?: boolean;
-  cursor?: string;
-  isAfterRemove?: boolean;
-  createdFactory?: (x: number, y: number) => any;
-  menuPlugins?: Array<any>
-  strokeWidth?: number
-}
 
 export const toolBarOptions: IToolBarItem[] = [
   {
@@ -41,6 +33,7 @@ export const toolBarOptions: IToolBarItem[] = [
     name: 'brushTool',
     title: '画笔',
     strokeWidth: 3,
+    stroke: 'rgba(0, 0, 0, 1)',
     createdFactory(x: number, y: number) {
       const pen: Pen = new Pen({
         name: 'brushTool',
@@ -49,67 +42,94 @@ export const toolBarOptions: IToolBarItem[] = [
         editable: true
       });
 
-      pen.setStyle({ stroke: 'rgba(0, 0, 0, 1)', strokeWidth: this.strokeWidth, strokeCap: 'round', strokeJoin: 'round' })
+      pen.setStyle({ stroke: this.stroke, strokeWidth: this.strokeWidth, strokeCap: 'round', strokeJoin: 'round' })
       return pen;
     },
-    menuPlugins: [LineSegmentSizePlugin],
+    menuPlugins: [LineSegmentSizePlugin, LineSegmentColorPlugin],
   },
   {
     icon: RECT_TOOl_ICON,
     name: 'rectTool',
     title: '矩形',
-    createdFactory: (x: number, y: number) => new Rect({
-      x,
-      y,
-      width: INITIAL_WIDTH,
-      height: INITIAL_HEIGHT,
-      strokeWidth: 2,
-      stroke: 'rgba(0, 0, 0, 1)',
-      editable: true,
-      fill: FILL // 背景色
-    })
+    strokeWidth: 2,
+    stroke: 'rgba(0, 0, 0, 1)',
+    fill: '#fff',
+    createdFactory(x: number, y: number) {
+      return new Rect({
+        name: 'rectTool',
+        x,
+        y,
+        width: INITIAL_WIDTH,
+        height: INITIAL_HEIGHT,
+        strokeWidth: this.strokeWidth,
+        stroke: this.stroke,
+        fill: this.fill,
+        editable: true,
+      })
+    },
+    menuPlugins: [LineSegmentSizePlugin, LineSegmentColorPlugin, LineSegmentBackgroundColorPlugin],
   },
   {
     icon: ELLIPSE_TOOl_ICON,
     name: 'ellipseTool',
     title: '椭圆',
-    createdFactory: (x: number, y: number) => new Ellipse({
-      x,
-      y,
-      width: INITIAL_WIDTH,
-      height: INITIAL_HEIGHT,
-      strokeWidth: 2,
-      stroke: 'rgba(0, 0, 0, 1)',
-      innerRadius: 1,
-      editable: true,
-      fill: FILL // 背景色
-    })
+    strokeWidth: 2,
+    stroke: 'rgba(0, 0, 0, 1)',
+    fill: '#fff',
+    createdFactory(x: number, y: number) {
+      return new Ellipse({
+        name: 'ellipseTool',
+        x,
+        y,
+        width: INITIAL_WIDTH,
+        height: INITIAL_HEIGHT,
+        innerRadius: 1,
+        editable: true,
+        strokeWidth: this.strokeWidth,
+        stroke: this.stroke,
+        fill: this.fill,
+      })
+    },
+
+    menuPlugins: [LineSegmentSizePlugin, LineSegmentColorPlugin, LineSegmentBackgroundColorPlugin],
   },
   {
     icon: LINE_TOOl_ICON,
     name: 'lineTool',
     title: '线条',
-    createdFactory: (x: number, y: number) => new Line({
-      x,
-      y,
-      toPoint: { x: 0, y: 0 },
-      strokeWidth: 3,
-      stroke: 'rgba(0, 0, 0, 1)',
-      editable: true,
-    })
+    strokeWidth: 3,
+    stroke: 'rgba(0, 0, 0, 1)',
+    createdFactory(x: number, y: number) {
+      return new Line({
+        name: 'lineTool',
+        x,
+        y,
+        toPoint: { x: 0, y: 0 },
+        strokeWidth: this.strokeWidth,
+        stroke: this.stroke,
+        editable: true,
+      })
+    },
+    menuPlugins: [LineSegmentSizePlugin, LineSegmentColorPlugin],
   },
   {
     icon: ARROW_TOOl_ICON,
     name: 'arrowTool',
     title: '箭头',
-    createdFactory: (x: number, y: number) => new Arrow({
-      x,
-      y,
-      toPoint: { x: 0, y: 0 },
-      strokeWidth: 3,
-      stroke: 'rgba(0, 0, 0, 1)',
-      editable: true,
-    })
+    strokeWidth: 3,
+    stroke: 'rgba(0, 0, 0, 1)',
+    createdFactory(x: number, y: number) {
+      return new Arrow({
+        name: 'arrowTool',
+        x,
+        y,
+        toPoint: { x: 0, y: 0 },
+        strokeWidth: this.strokeWidth,
+        stroke: this.stroke,
+        editable: true,
+      })
+    },
+    menuPlugins: [LineSegmentSizePlugin, LineSegmentColorPlugin],
   },
   {
     icon: TEXT_TOOl_ICON,
@@ -117,16 +137,22 @@ export const toolBarOptions: IToolBarItem[] = [
     title: '文本',
     notMove: true,
     cursor: 'text',
-    createdFactory: (x: number, y: number) => new Text({
-      x: x - 5,
-      width: 200,
-      height: 35,
-      y: y - 10,
-      text: '请双击编辑内容',
-      fontSize: 24,
-      fill: 'rgba(0, 0, 0, 1)',
-      editable: true,
-    }),
+    fontSize: 24,
+    fill: 'rgba(0, 0, 0, 1)',
+    createdFactory(x: number, y: number) {
+      return new Text({
+        name: 'textTool',
+        x: x - 5,
+        width: 200,
+        height: 35,
+        y: y - 10,
+        text: '请双击编辑内容',
+        fontSize: this.fontSize,
+        fill: this.fill,
+        editable: true,
+      })
+    },
+    menuPlugins: [TextSize, TextColor],
   },
   {
     icon: ERASER_TOOl_ICON,

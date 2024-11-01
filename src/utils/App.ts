@@ -1,16 +1,21 @@
 import DrawingBoard from "./DrawingBoard";
-
-interface IAppProps {
-    domId: string
-}
+import { IAppProps } from "./types";
 
 class App {
     static drawingBoardInstance: null | DrawingBoard = null;
 
     static init = ({
-        domId
+        domId,
+        onChange
     }: IAppProps) => {
-        this.drawingBoardInstance = new DrawingBoard(domId);
+        this.drawingBoardInstance = new DrawingBoard({
+            domId,
+            onChange
+        });
+    }
+
+    static destroy() {
+        this.drawingBoardInstance && this.drawingBoardInstance.destroy();
     }
 }
 

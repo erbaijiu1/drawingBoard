@@ -1,26 +1,27 @@
 import { IPluginProps } from '../../utils/types'
 import { ElRow, ElCol, ElSlider } from 'element-plus'
-const LineSegmentPlugin = ({ drawingBoard }: IPluginProps) => {
+const TextSize = ({ drawingBoard }: IPluginProps) => {
     const graphics = drawingBoard.getSelectedGraphics()
 
     return (
         <ElRow>
             <ElCol span={24}>
-                <p class="text">线段粗细</p>
+                <p class="text">文字大小</p>
             </ElCol>
 
             <ElCol span={24} >
                 <ElSlider
-                    modelValue={graphics.value['strokeWidth']}
+                    show-alpha
+                    modelValue={graphics.value['fontSize']}
                     onUpdate:modelValue={(val) => {
-                        graphics.value['strokeWidth'] = val
+                        graphics.value['fontSize'] = val
                     }}
-                    max={20}
-                    min={1}
+                    max={100}
+                    min={12}
                 />
             </ElCol>
         </ElRow >
     )
 }
 
-export default LineSegmentPlugin
+export default TextSize

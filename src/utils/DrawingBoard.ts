@@ -2,20 +2,25 @@ import "@leafer-in/editor";
 import '@leafer-in/text-editor'
 import Tools, { INITIAL_HEIGHT, INITIAL_WIDTH } from "./Tools";
 
-import { App, DragEvent, ICursorType, ILeaf, Text } from "leafer-ui";
+import { App, DragEvent, ICursorType, ILeaf, IUIJSONData, Text } from "leafer-ui";
 import { Ref, ref, toRef, watch } from "vue";
 import { EditorEvent } from "@leafer-in/editor";
+import History from "./history";
+import { IAppProps } from "./types";
 
 class DrawingBoard {
   private leaferInstance: null | App = null;
   private rootDom: null | HTMLElement = null;
   private clearGraphicsQueue = new Map<ILeaf, ILeaf>();
   private isSelect = false;
+  private onChange: (json: IUIJSONData) => void = () => { };
+  private history: null | History = null;
 
   public tools: null | Tools = null;
   public selectedGraphics: Ref<null | any> = ref(null);
+  public readonly leaferInstanceReadonly: null | App = null;
 
-  constructor(domId: string) {
+  constructor({ domId, onChange }: IAppProps) {
     this.rootDom = document.getElementById(domId);
 
     if (!this.rootDom) {
@@ -23,8 +28,12 @@ class DrawingBoard {
       return;
     }
 
+    if (onChange) this.onChange = onChange;
+
     this.leaferInstance = this.initApp(this.rootDom);
+    this.leaferInstanceReadonly = this.leaferInstance;
     this.tools = new Tools();
+    this.history = new History(this.leaferInstance);
     this.initEvent(this.leaferInstance);
 
     watch(() =>
@@ -50,6 +59,23 @@ class DrawingBoard {
     app.on(DragEvent.DRAG, this.mousemove)
     app.on(DragEvent.UP, this.mouseup)
     app.editor.on(EditorEvent.SELECT, this.graphicSelected)
+    document.body.addEventListener('keydown', this.onKeyDownEvent)
+  }
+
+  public destroy() {
+    this.leaferInstance.off(DragEvent.DOWN, this.mousedown)
+    this.leaferInstance.off(DragEvent.DRAG, this.mousemove)
+    this.leaferInstance.off(DragEvent.UP, this.mouseup)
+    this.leaferInstance.editor.off(EditorEvent.SELECT, this.graphicSelected)
+    document.body.removeEventListener('keydown', this.onKeyDownEvent)
+  }
+
+  onKeyDownEvent = (event: KeyboardEvent) => {
+    // 快捷键撤销
+    if (event.ctrlKey && event.key === 'z') this.historyBack();
+
+    // 快捷键取消撤销
+    if (event.ctrlKey && event.key === 'y') this.historyUnBack();
   }
 
   private mousedown = (e: DragEvent) => this.aop(null, () => {
@@ -121,8 +147,8 @@ class DrawingBoard {
     this.tools.toolbarActiveIndex.value = 0;
     this.selectedGraphics.value = null;
 
-    // const isSave = this.history.save(this.leafer.value!.tree.toJSON()!);
-    // isSave && this.onChange(this.leafer.value!.tree.toJSON()!);
+    const isSave = this.history.save(this.leaferInstance.tree.toJSON());
+    isSave && this.onChange(this.leaferInstance.tree.toJSON());
   }
 
   private aop = (beforeHandler, afterHandler) => {
@@ -154,9 +180,6 @@ class DrawingBoard {
     } else {
       this.selectedGraphics.value = value;
     }
-
-    // value.zIndex = this.#activeZIndex;
-    // this.#activeZIndex++;
   }
 
   public setCursor = () => {
@@ -168,6 +191,20 @@ class DrawingBoard {
     return toRef(
       this.selectedGraphics.value ? this.selectedGraphics.value : this.tools.getActiveGraphics()
     );
+  }
+
+  setJson = (json: IUIJSONData | null) => {
+    if (!json) return;
+    this.leaferInstance.tree.set({ children: json.children })
+    this.onChange(json);
+  }
+
+  historyBack = () => {
+    this.setJson(this.history.getBackJson())
+  }
+
+  historyUnBack = () => {
+    this.setJson(this.history.getUnBackJson())
   }
 }
 

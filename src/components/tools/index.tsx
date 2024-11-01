@@ -1,8 +1,7 @@
-// import './index.scss'
-
 import App from "../../utils/App"
 import Toolbar from "./Toolbar"
 import ToolbarMenu from "./ToolbarMenu"
+import Menu from "./Menu"
 
 const Index = () => {
     return (
@@ -10,8 +9,10 @@ const Index = () => {
             <Toolbar />
 
             {
-                App.drawingBoardInstance?.tools?.toolbarActiveIndex ? <ToolbarMenu /> : <span></span>
+                App.drawingBoardInstance?.tools?.toolbarActiveIndex ? <ToolbarMenu /> : null
             }
+
+            <Menu />
         </div>
     )
 }

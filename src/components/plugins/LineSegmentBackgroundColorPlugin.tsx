@@ -1,20 +1,20 @@
-import { ElRow, ElCol, ElColorPicker } from 'element-plus'
 import { IPluginProps } from '../../utils/types'
-const LineSegmentColorPlugin = ({ drawingBoard }: IPluginProps) => {
+import { ElRow, ElCol, ElColorPicker } from 'element-plus'
+const LineSegmentBackgroundColorPlugin = ({ drawingBoard }: IPluginProps) => {
     const graphics = drawingBoard.getSelectedGraphics()
 
     return (
         <ElRow>
             <ElCol span={24}>
-                <p class="text">线段颜色</p>
+                <p class="text">填充颜色</p>
             </ElCol>
 
             <ElCol span={24} >
                 <ElColorPicker
                     show-alpha
-                    modelValue={graphics.value['stroke']}
+                    modelValue={graphics.value['fill']}
                     onUpdate:modelValue={(val) => {
-                        graphics.value['stroke'] = val
+                        graphics.value['fill'] = val
                     }}
                 />
             </ElCol>
@@ -22,4 +22,4 @@ const LineSegmentColorPlugin = ({ drawingBoard }: IPluginProps) => {
     )
 }
 
-export default LineSegmentColorPlugin
+export default LineSegmentBackgroundColorPlugin
