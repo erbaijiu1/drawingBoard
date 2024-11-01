@@ -2,6 +2,7 @@ import App from "../../utils/App"
 import Toolbar from "./Toolbar"
 import ToolbarMenu from "./ToolbarMenu"
 import Menu from "./Menu"
+import Tips from "./Tips"
 
 const Index = () => {
     return (
@@ -13,6 +14,7 @@ const Index = () => {
             }
 
             <Menu />
+            <Tips content="HUY 画板" />
         </div>
     )
 }

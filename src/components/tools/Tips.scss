@@ -1,0 +1,16 @@
+.toolsTitle {
+    position: absolute;
+    display: flex;
+    bottom: 2%;
+    right: 1%;
+    border: 1px solid #dcdfe6;
+    border-radius: 10px;
+    padding: 20px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+}
