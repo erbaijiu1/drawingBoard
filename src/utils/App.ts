@@ -6,11 +6,13 @@ class App {
 
     static init = ({
         domId,
-        onChange
+        onChange,
+        config = {}
     }: IAppProps) => {
         this.drawingBoardInstance = new DrawingBoard({
             domId,
-            onChange
+            onChange,
+            config
         });
     }
 
