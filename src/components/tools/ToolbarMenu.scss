@@ -2,12 +2,13 @@
     position: absolute;
     width: 200px;
     max-height: 500px;
-    overflow-y: auto;
+    // overflow-y: auto;
     border: 1px solid #dcdfe6;
     padding: 10px 20px;
     border-radius: 10px;
     top: 20%;
     right: 5%;
+    background-color: #ffffff;
 
     .toolbarMenuOption {
         margin-top: 10px;
@@ -41,5 +42,19 @@
                 height: 100%;
             }
         }
+    }
+}
+
+.toggle-button {
+    position: absolute; // 绝对定位
+    top: 0px; // 上边距
+    right: 4px; // 右边距
+    background: transparent; // 背景透明
+    border: none; // 无边框
+    cursor: pointer; // 鼠标指针样式
+
+    svg {
+        width: 20px; // 图标宽度
+        height: 20px; // 图标高度
     }
 }

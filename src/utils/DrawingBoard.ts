@@ -97,6 +97,7 @@ class DrawingBoard {
       );
 
       this.selectedGraphics.value = graph;
+      // console.log("get graph:", graph);
       this.leaferInstance.tree.add(graph);
     });
 
@@ -141,8 +142,9 @@ class DrawingBoard {
       this.clearGraphicsQueue.delete(graphics);
     });
 
-    this.tools.toolbarActiveIndex.value = 0;
+    // this.tools.toolbarActiveIndex.value = 0;
     this.selectedGraphics.value = null;
+    // console.log(this.tools.toolbarActiveIndex.value);
 
     const isSave = this.history.save(this.leaferInstance.tree.toJSON());
     isSave && this.onChange(this.leaferInstance.tree.toJSON());

@@ -20,7 +20,7 @@ export default defineComponent({
                     <ElButton onClick={() => App.drawingBoardInstance.historyUnBack()} icon={ArrowRight} circle></ElButton>
                 </ElTooltip>
 
-                <ElTooltip effect="dark" content="清空白板" placement="top-start">
+                <ElTooltip effect="dark" content="清空画板" placement="top-start">
                     <ElButton onClick={() => App.drawingBoardInstance.leaferInstanceReadonly.tree.clear()} icon={DeleteFilled} circle></ElButton>
                 </ElTooltip>
 
