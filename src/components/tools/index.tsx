@@ -14,7 +14,7 @@ const Index = () => {
             }
 
             <Menu />
-            <Tips content="随心画板" />
+            {/* <Tips content="随心画板" /> */}
         </div>
     )
 }
